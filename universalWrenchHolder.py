@@ -39,16 +39,16 @@ barWidth= 0.8
 printScale= 25.4;
 
 # This is the radius unit of the cylinder at the top of the bars
-# Outside radius is set to 1.5 x cylScale (in OpenScad units)
-# Inside radius is set to 0.5 x cylScale (in OpenScad units)
-cylScale= 1.0
+# Outside radius is set to 1.5 x cylScale (in mm)
+# Inside radius is set to 0.5 x cylScale (in mm)
+cylScale= 2.54 
 
 # Maximum lengh of the "bar stock" we have to work from
 # Set to 250 which exceeds what my 3D printer will print
 barLen= 250;
 
 # How thick the bars are at either end of the wrench holder
-endBarScale= 1.5
+endBarScale= 1.0 * 2
 
 ######################################################################
 
@@ -90,7 +90,7 @@ for i in range(0, len(slots)):
   bars += solid.utils.translate([position, 0, 0])(holderBar)
   position += cylScale * 1.5
 bars += solid.utils.translate([position, 0, 0])(backBar)
-position += cylScale * 1.5
+position += cylScale * endBarScale
 barSize= position
 
 barFront= (barLen - widthFront * printScale) / 2
@@ -141,7 +141,7 @@ bottom= solid.utils.extrude_along_path(shape_pts=bottomShape, path_pts=bottomPat
 # Extrude out a trapezoidal shape in the center of the holder so
 # that each wrench is held on two tabs
 ######################################################################
-topPath= [euclid3.Point3(0,0, cylScale * 2), euclid3.Point3(0, 0, 1 + cylScale * 1.5 - (depthBack + height) * printScale)]
+topPath= [euclid3.Point3(0,0, cylScale * 2), euclid3.Point3(0, 0, endBarScale * 2 + cylScale * 1.5 - (depthBack + height) * printScale)]
 topShape= [euclid3.Point3(-0.01, barFront + (barWidth * printScale), 0), \
            euclid3.Point3(barSize + 0.01, barBack + (barWidth * printScale), 0), \
            euclid3.Point3(barSize + 0.01, barLen - barBack - (barWidth * printScale), 0), \
